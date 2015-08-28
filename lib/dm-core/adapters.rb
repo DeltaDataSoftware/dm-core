@@ -160,6 +160,7 @@ module DataMapper
       #
       # @api private
       def load_adapter(name)
+        name.chop if name.eql?("mysql2")
         require "dm-#{name}-adapter"
       rescue LoadError => original_error
         begin
