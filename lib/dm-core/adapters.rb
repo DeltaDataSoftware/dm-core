@@ -128,7 +128,6 @@ module DataMapper
       #
       # @api private
       def adapter_class(name)
-        name = name.chop if name.eql?("mysql2")
         adapter_name = normalize_adapter_name(name)
         class_name = (DataMapper::Inflector.camelize(adapter_name) << 'Adapter').to_sym
         load_adapter(adapter_name) unless const_defined?(class_name)
@@ -210,7 +209,10 @@ module DataMapper
       #
       # @api private
       def normalize_adapter_name(name)
-        (original = name.to_s) == 'sqlite3' ? 'sqlite' : original
+        original = name.to_s
+        original = 'sqlite' if original == 'sqlite3'
+        original = 'mysql' if original == 'mysql2'
+        original
       end
 
     end
